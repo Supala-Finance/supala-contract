@@ -1,0 +1,220 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.30;
+import { LendingPoolFactoryHook } from "../lib/LendingPoolFactoryHook.sol";
+
+/**
+ * @title IFactory
+ * @notice Interface for lending pool factory functionality
+ * @dev Defines the contract for creating and managing lending pools
+ * @author Supala Labs
+ * @custom:version 1.0.0
+ */
+interface IFactory {
+    /**
+     * @notice Returns the address of the token data stream contract
+     * @return Address of the token data stream
+     */
+    function tokenDataStream() external view returns (address);
+
+    /**
+     * @notice Returns the address of the position deployer contract
+     * @return Address of the position deployer
+     */
+    function positionDeployer() external view returns (address);
+
+    /**
+     * @notice Returns the address of the proxy deployer contract
+     * @return Address of the proxy deployer
+     */
+    function proxyDeployer() external view returns (address);
+
+    /**
+     * @notice Returns the address of the shares token deployer contract
+     * @return Address of the shares token deployer
+     */
+    function sharesTokenDeployer() external view returns (address);
+
+    /**
+     * @notice Returns the owner address of the factory
+     * @return Address of the factory owner
+     */
+    function owner() external view returns (address);
+
+    /**
+     * @notice Returns the address of the health check contract
+     * @return Address of the isHealthy contract
+     */
+    function isHealthy() external view returns (address);
+
+    /**
+     * @notice Returns the address of the Supala emitter contract
+     * @return Address of the Supala emitter contract
+     */
+    function supalaEmitter() external view returns (address);
+
+    /**
+     * @notice Checks if an address is an authorized operator
+     * @param _operator Address to check
+     * @return True if the address is an operator
+     */
+    function operator(address _operator) external view returns (bool);
+
+    /**
+     * @notice Returns the OFT (Omnichain Fungible Token) address for a token
+     * @param _token Address of the token
+     * @return Address of the OFT contract
+     */
+    function oftAddress(address _token) external view returns (address);
+
+    /**
+     * @notice Returns the address of the wrapped native token
+     * @return Address of the wrapped native token contract
+     */
+    function wrappedNative() external view returns (address);
+
+    /**
+     * @notice Sets the token data stream contract address
+     * @param _tokenDataStream Address of the token data stream contract
+     */
+    function setTokenDataStream(address _tokenDataStream) external;
+
+    /**
+     * @notice Creates a new lending pool
+     * @param _lendingPoolParams The parameters for the lending pool
+     * @return Address of the newly created lending pool router
+     */
+    function createLendingPool(LendingPoolFactoryHook.LendingPoolParams memory _lendingPoolParams) external returns (address);
+
+    /**
+     * @notice Sets operator status for an address
+     * @param _operator Address of the operator
+     * @param _status True to grant operator status, false to revoke
+     */
+    function setOperator(address _operator, bool _status) external;
+
+    /**
+     * @notice Sets the interest rate model contract address
+     * @param _interestRateModel Address of the interest rate model
+     */
+    function setInterestRateModel(address _interestRateModel) external;
+
+    /**
+     * @notice Sets the minimum amount required to supply liquidity for a token
+     * @param _token Address of the token
+     * @param _minAmountSupplyLiquidity Minimum amount required
+     */
+    function setMinAmountSupplyLiquidity(address _token, uint256 _minAmountSupplyLiquidity) external;
+
+    /**
+     * @notice Returns the protocol contract address
+     * @return Address of the protocol contract
+     */
+    function protocol() external view returns (address);
+
+    /**
+     * @notice Sets the OFT address for a token
+     * @param _token Address of the token
+     * @param _oftAddress Address of the OFT contract
+     */
+    function setOftAddress(address _token, address _oftAddress) external;
+
+    /**
+     * @notice Sets the position deployer contract address
+     * @param _positionDeployer Address of the position deployer
+     */
+    function setPositionDeployer(address _positionDeployer) external;
+
+    /**
+     * @notice Sets the wrapped native token contract address
+     * @param _wrappedNative Address of the wrapped native token
+     */
+    function setWrappedNative(address _wrappedNative) external;
+
+    /**
+     * @notice Sets the DEX router contract address
+     * @param _dexRouter Address of the DEX router
+     */
+    function setDexRouter(address _dexRouter) external;
+
+    /**
+     * @notice Sets the IsHealthy contract address
+     * @param _isHealthy Address of the IsHealthy contract
+     */
+    function setIsHealthy(address _isHealthy) external;
+
+    /**
+     * @notice Sets the LendingPoolRouterDeployer contract address
+     * @param _lendingPoolRouterDeployer Address of the LendingPoolRouterDeployer contract
+     */
+    function setLendingPoolRouterDeployer(address _lendingPoolRouterDeployer) external;
+
+    /**
+     * @notice Sets the LendingPoolDeployer contract address
+     * @param _lendingPoolDeployer Address of the LendingPoolDeployer contract
+     */
+    function setLendingPoolDeployer(address _lendingPoolDeployer) external;
+
+    /**
+     * @notice Sets the Protocol contract address
+     * @param _protocol Address of the Protocol contract
+     */
+    function setProtocol(address _protocol) external;
+
+    /**
+     * @notice Sets the ProxyDeployer contract address
+     * @param _proxyDeployer Address of the ProxyDeployer contract
+     */
+    function setProxyDeployer(address _proxyDeployer) external;
+
+    /**
+     * @notice Sets the SharesTokenDeployer contract address
+     * @param _sharesTokenDeployer Address of the SharesTokenDeployer contract
+     */
+    function setSharesTokenDeployer(address _sharesTokenDeployer) external;
+
+    /**
+     * @notice Returns the address of the DEX router
+     * @return Address of the DEX router contract
+     */
+    function dexRouter() external view returns (address);
+
+    /**
+     * @notice Returns the address of the interest rate model
+     * @return Address of the interest rate model contract
+     */
+    function interestRateModel() external view returns (address);
+
+    /**
+     * @notice Converts a chain ID to LayerZero endpoint ID
+     * @param _chainId The chain ID to convert
+     * @return The corresponding LayerZero endpoint ID
+     */
+    function chainIdToEid(uint256 _chainId) external view returns (uint32);
+
+    /**
+     * @notice Returns the creator fee for a lending pool router
+     * @param _lendingPoolRouter The lending pool router address
+     * @return The creator fee amount
+     */
+    function creatorFee(address _lendingPoolRouter) external view returns (uint256);
+
+    /**
+     * @notice Sets the LayerZero endpoint ID for a specific chain ID
+     * @param _chainId The blockchain chain ID
+     * @param _eid The LayerZero endpoint ID corresponding to the chain
+     */
+    function setChainIdToEid(uint256 _chainId, uint32 _eid) external;
+
+    /**
+     * @notice Returns the minimum amount of liquidity required to supply
+     * @param _token The token address
+     * @return The minimum amount of liquidity required to supply
+     */
+    function minAmountSupplyLiquidity(address _token) external view returns (uint256);
+
+    /**
+     * @notice Sets the SupalaEmitter contract address
+     * @param _supalaEmitter Address of the SupalaEmitter contract
+     */
+    function setSupalaEmitter(address _supalaEmitter) external;
+}
