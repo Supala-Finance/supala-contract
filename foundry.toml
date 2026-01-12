@@ -21,6 +21,8 @@ base_mainnet = "${BASE_MAINNET_RPC}"
 arb_mainnet = "${ARB_MAINNET_RPC}"
 moonbeam_mainnet = "${MOONBEAM_MAINNET_RPC}"
 moonbeam_testnet = "${MOONBEAM_TESTNET_RPC}"
+mantle_mainnet = "${MANTLE_MAINNET_RPC}"
+mantle_testnet = "${MANTLE_TESTNET_RPC}"
 
 
 # See more config options https://github.com/foundry-rs/foundry/blob/master/crates/config/README.md#all-options

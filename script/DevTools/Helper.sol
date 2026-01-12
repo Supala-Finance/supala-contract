@@ -8,24 +8,28 @@ contract Helper {
     address public constant GLMR_LZ_ENDPOINT = 0x1a44076050125825900e736c501f859c50fE728c;
     address public constant KAIA_TESTNET_LZ_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
     address public constant BASE_TESTNET_LZ_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
+    address public constant MANTLE_TESTNET_LZ_ENDPOINT = 0x6EDCE65403992e310A62460808c4b910D972f10f;
 
     address public constant BASE_SEND_LIB = 0xB5320B0B3a13cC860893E2Bd79FCd7e13484Dda2;
     address public constant KAIA_SEND_LIB = 0x9714Ccf1dedeF14BaB5013625DB92746C1358cb4;
     address public constant GLMR_SEND_LIB = 0xeac136456d078bB76f59DCcb2d5E008b31AfE1cF;
     address public constant KAIA_TESTNET_SEND_LIB = 0x6bd925aA58325fba65Ea7d4412DDB2E5D2D9427d;
     address public constant BASE_TESTNET_SEND_LIB = 0xC1868e054425D378095A003EcbA3823a5D0135C9;
+    address public constant MANTLE_TESTNET_SEND_LIB = 0x9A289B849b32FF69A95F8584a03343a33Ff6e5Fd;
 
     address public constant BASE_RECEIVE_LIB = 0xc70AB6f32772f59fBfc23889Caf4Ba3376C84bAf;
     address public constant KAIA_RECEIVE_LIB = 0x937AbA873827BF883CeD83CA557697427eAA46Ee;
     address public constant GLMR_RECEIVE_LIB = 0x2F4C6eeA955e95e6d65E08620D980C0e0e92211F;
     address public constant KAIA_TESTNET_RECEIVE_LIB = 0xFc4eA96c3de3Ba60516976390fA4E945a0b8817B;
     address public constant BASE_TESTNET_RECEIVE_LIB = 0x12523de19dc41c91F7d2093E0CFbB76b17012C8d;
+    address public constant MANTLE_TESTNET_RECEIVE_LIB = 0x8A3D588D9f6AC041476b094f97FF94ec30169d3D;
 
     uint32 public constant BASE_EID = 30184;
     uint32 public constant KAIA_EID = 30150;
     uint32 public constant GLMR_EID = 30126;
     uint32 public constant KAIA_TESTNET_EID = 40150;
     uint32 public constant BASE_TESTNET_EID = 40245;
+    uint32 public constant MANTLE_TESTNET_EID = 40246;
 
     address public constant BASE_DVN1 = 0x554833698Ae0FB22ECC90B01222903fD62CA4B47; // Canary
     address public constant BASE_DVN2 = 0xa7b5189bcA84Cd304D8553977c7C614329750d99; // Horizen
@@ -47,11 +51,16 @@ contract Helper {
     address public constant BASE_TESTNET_DVN2 = 0xe1a12515F9AB2764b887bF60B923Ca494EBbB2d6; // LayerZeroLabs
     address public constant BASE_TESTNET_DVN3 = 0xe1a12515F9AB2764b887bF60B923Ca494EBbB2d6; // LayerZeroLabs
 
+    address public constant MANTLE_TESTNET_DVN1 = 0x9454f0EABc7C4Ea9ebF89190B8bF9051A0468E03; // LayerZeroLabs
+    address public constant MANTLE_TESTNET_DVN2 = 0x9454f0EABc7C4Ea9ebF89190B8bF9051A0468E03; // LayerZeroLabs
+    address public constant MANTLE_TESTNET_DVN3 = 0x9454f0EABc7C4Ea9ebF89190B8bF9051A0468E03; // LayerZeroLabs
+
     address public constant BASE_EXECUTOR = 0x2CCA08ae69E0C44b18a57Ab2A87644234dAebaE4;
     address public constant KAIA_EXECUTOR = 0xe149187a987F129FD3d397ED04a60b0b89D1669f;
     address public constant GLMR_EXECUTOR = 0xEC0906949f88f72bF9206E84764163e24a56a499;
     address public constant KAIA_TESTNET_EXECUTOR = 0xddF3266fEAa899ACcf805F4379E5137144cb0A7D;
     address public constant BASE_TESTNET_EXECUTOR = 0x8A3D588D9f6AC041476b094f97FF94ec30169d3D;
+    address public constant MANTLE_TESTNET_EXECUTOR = 0x8BEEe743829af63F5b37e52D5ef8477eF12511dE;
 
     address public constant KAIA_USDT = 0xd077A400968890Eacc75cdc901F0356c943e4fDb;
     address public constant KAIA_USDT_STARGATE = 0x9025095263d1E548dc890A7589A4C78038aC40ab; // stargate
@@ -117,33 +126,13 @@ contract Helper {
 
     address public constant BASE_OAPP_ADAPTER = 0x43BB8bEb166c8786C50a9D1D5c8482D667CF981A;
     // *******************
-    // *******************
 
-    // *******************
-    // ORACLE - KAIA MAINNET
-    // address public constant USDT_USD = 0xa7C4c292Ed720b1318F415B106a443Dc1f052994;
-    // address public constant NATIVE_USDT = 0x9254CD72f207cc231A2307Eac5e4BFa316eb0c2e;
-    // address public constant ETH_USDT = 0xbF61f1F8D45EcB33006a335E7c76f306689dcAab;
-    // address public constant BTC_USDT = 0x624c060ea3fe93321e40530F3f7E587545D594aA;
-
-    // ORACLE - KAIA TESTNET
-    address public constant USDT_USD = 0x2D9A3d17400332c44ff0E2dC1b728529a33F5591;
-    address public constant NATIVE_USDT = 0xC2caA26226585F666Ec79f8eCDB0AEc17893aF1d;
-    address public constant ETH_USDT = 0x22BE5ff1eF09ebf06995Da9050d44d23070C2142;
-    address public constant BTC_USDT = 0x43aDD670A0E1948C90386d2b972FCAEC6CE1BE90;
-
-    // ORACLE - BASE TESTNET
-    // address public constant USDT_USD = 0xf19d560eB8d2ADf07BD6D13ed03e1D11215721F9;
-    // address public constant NATIVE_USDT = 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70;
-    // address public constant ETH_USDT = 0x71041dddad3595F9CEd3DcCFBe3D1F4b0a16Bb70;
-    // address public constant BTC_USDT = 0x64c911996D3c6aC71f9b455B1E8E7266BcbD848F;
-
-    // ORACLE - MOONBEAM MAINNET
-    // address public constant USDC_USD = 0xD3C586Eec1C6C3eC41D276a23944dea080eDCf7f;
-    // address public constant USDT_USD = 0x4eadC6ee74b7Ceb09A4ad90a33eA2915fbefcf76;
-    // address public constant NATIVE_USDT = 0xB64e610082d3c5C34130b8229E13DaB96180a6DF;
-    // address public constant ETH_USDT = 0x5b0cf2b36a65a6BB085D501B971e4c102B9Cd473;
-    // address public constant BTC_USDT = 0xCAc4d304032a46C8D0947396B7cBb07986826A36;
+    // ORACLE - MANTLE TESTNET
+    address public constant USDT_USD = 0x71c184d899c1774d597d8D80526FB02dF708A69a;
+    address public constant USDC_USD = 0x1d6F6dbD68BD438950c37b1D514e49306F65291E;
+    address public constant NATIVE_USDT = 0x4c8962833Db7206fd45671e9DC806e4FcC0dCB78;
+    address public constant ETH_USDT = 0x9bD31B110C559884c49d1bA3e60C1724F2E336a7;
+    address public constant BTC_USDT = 0xecC446a3219da4594d5Ede8314f500212e496E17;
 
     // *******************
 
@@ -211,6 +200,54 @@ contract Helper {
 
     address public constant KAIA_TESTNET_HELPER_UTILS = 0xF6d95EeFF99E171Bb150d736eb2BE23c9cF6a6ef;
 
+    address public constant MANTLE_TESTNET_MOCK_USDT = 0xdF05e9AbF64dA281B3cBd8aC3581022eC4841FB2;
+    address public constant MANTLE_TESTNET_MOCK_USDC = 0x04C37dc1b538E00b31e6bc883E16d97cD7937a10;
+    address public constant MANTLE_TESTNET_MOCK_WMNT = 0x15858A57854BBf0DF60A737811d50e1Ee785f9bc;
+    address public constant MANTLE_TESTNET_MOCK_WETH = 0x4Ba8D8083e7F3652CCB084C32652e68566E9Ef23;
+    address public constant MANTLE_TESTNET_MOCK_WBTC = 0x007F735Fd070DeD4B0B58D430c392Ff0190eC20F;
+
+    address public constant MANTLE_TESTNET_MOCK_DEX = 0x5C368bd6cE77b2ca47B4ba791fCC1f1645591c84;
+
+    address public constant MANTLE_TESTNET_USDT_ELEVATED_MINTER_BURNER = 0x175867CAF278eB0610F216F3E0a6E671f2382E22;
+    address public constant MANTLE_TESTNET_USDT_OFT_ADAPTER = 0xC327486Db1417644f201d84414bbeA6C8A948bef;
+
+    address public constant MANTLE_TESTNET_USDC_ELEVATED_MINTER_BURNER = 0x6Ab9c1AAf4f8172138086AA72be2AB8aA6579dbd;
+    address public constant MANTLE_TESTNET_USDC_OFT_ADAPTER = 0x886ba47579DC4f5DcB53ffd20429089A7788C072;
+
+    address public constant MANTLE_TESTNET_WMNT_ELEVATED_MINTER_BURNER = 0x39926DA4905f5Edb956F5dB5F2e2FF044E0882B2;
+    address public constant MANTLE_TESTNET_WMNT_OFT_ADAPTER = 0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe;
+
+    address public constant MANTLE_TESTNET_WETH_ELEVATED_MINTER_BURNER = 0xF0D1c69cc148db2437131a5A736d77FD6fa20B47;
+    address public constant MANTLE_TESTNET_WETH_OFT_ADAPTER = 0x487b1e0177B3ac1ACA7e8c353ed0Df133593a8EB;
+
+    address public constant MANTLE_TESTNET_WBTC_ELEVATED_MINTER_BURNER = 0xe5D4C481e25880eaD3A1647A210A9f219204f3CA;
+    address public constant MANTLE_TESTNET_WBTC_OFT_ADAPTER = 0xC746B3AaB0C6Da075C9b7b43CEebd437Ef759D5b;
+
+    address public constant MANTLE_TESTNET_TOKEN_DATA_STREAM_IMPLEMENTATION = 0x7B3C20D2B3F8C205f624e62D356354Ed1Ae9F64b;
+    address public constant MANTLE_TESTNET_TOKEN_DATA_STREAM = 0x10FD0d8280E94D0DbC3013b778Ef26d47105Ea7b;
+
+    address public constant MANTLE_TESTNET_INTEREST_RATE_MODEL_IMPLEMENTATION = 0x5C43afab54BD5E5568d0aD54ea60D4d065303C35;
+    address public constant MANTLE_TESTNET_INTEREST_RATE_MODEL = 0xBdC661EECb0dcFB940A34008e0190c9103013C41;
+
+    address public constant MANTLE_TESTNET_LENDING_POOL_DEPLOYER = 0x31fC86E13108A098830eea63A8A9f6d80DfC89Aa;
+    address public constant MANTLE_TESTNET_LENDING_POOL_ROUTER_DEPLOYER = 0x02a66B51Fc24E08535a6Cfe1e11E532D8A089212;
+    address public constant MANTLE_TESTNET_POSITION_DEPLOYER = 0x4852Bc014401415C4CE4788A04cAB019d1527aAa;
+    address public constant MANTLE_TESTNET_PROXY_DEPLOYER = 0xb516190F8192CCEaF8B1DA7D9Ca1C6C75b9F410c;
+    address public constant MANTLE_TESTNET_SHARES_TOKEN_DEPLOYER = 0x33FaBa0e0cE340AfC4fb03038151FF7EE1d5f95b;
+
+    address public constant MANTLE_TESTNET_IS_HEALTHY_IMPLEMENTATION = 0xc3be8ab4CA0cefE3119A765b324bBDF54a16A65b;
+    address public constant MANTLE_TESTNET_IS_HEALTHY = 0xE2e025Ff8a8adB2561e3C631B5a03842b9A1Ae88;
+
+    address public constant MANTLE_TESTNET_PROTOCOL = 0x5E6AAd48fB0a23E9540A5EAFfb87846E8ef04C42;
+
+    address public constant MANTLE_TESTNET_LENDING_POOL_FACTORY_IMPLEMENTATION = 0x718b1b67f287571767452CC7d24BCD95c63DbA13;
+    address public constant MANTLE_TESTNET_LENDING_POOL_FACTORY = 0x46dA9F76c20a752132dDaefD2B14870e0A152D71;
+
+    address public constant MANTLE_TESTNET_SUPALA_EMITTER_IMPLEMENTATION = 0xC72f2eb4A97F19ecD0C10b5201676a10B6D8bB67;
+    address public constant MANTLE_TESTNET_SUPALA_EMITTER = 0x46638aD472507482B7D5ba45124E93D16bc97eCE;
+
+    address public constant MANTLE_TESTNET_HELPER_UTILS = 0x6c454d20F4CB5f69e2D66693fA8deE931D7432dF;
+
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
@@ -218,9 +255,11 @@ contract Helper {
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
 
     address public usdt;
+    address public usdc;
     address public wNative;
     address public native = address(1); // Using wNative instead of native token address(1) for better DeFi composability
     address public weth;
+    address public wbtc;
 
     address public usdtUsdAdapter;
     address public nativeUsdtAdapter;
@@ -321,6 +360,27 @@ contract Helper {
             oapp = KAIA_TESTNET_USDT_OFT_ADAPTER;
             oapp2 = KAIA_TESTNET_WKAIA_OFT_ADAPTER;
             oapp3 = KAIA_TESTNET_WETH_OFT_ADAPTER;
+        } else if (block.chainid == 5003) {
+            chainName = "MANTLE_TESTNET";
+            endpoint = MANTLE_TESTNET_LZ_ENDPOINT;
+            sendLib = MANTLE_TESTNET_SEND_LIB;
+            receiveLib = MANTLE_TESTNET_RECEIVE_LIB;
+            srcEid = MANTLE_TESTNET_EID;
+            gracePeriod = uint32(0);
+            dvn1 = MANTLE_TESTNET_DVN1;
+            dvn2 = MANTLE_TESTNET_DVN2;
+            executor = MANTLE_TESTNET_EXECUTOR;
+            eid0 = MANTLE_TESTNET_EID;
+            eid1 = BASE_TESTNET_EID;
+            usdt = MANTLE_TESTNET_MOCK_USDT;
+            usdc = MANTLE_TESTNET_MOCK_USDC;
+            wNative = MANTLE_TESTNET_MOCK_WMNT;
+            weth = MANTLE_TESTNET_MOCK_WETH;
+            wbtc = MANTLE_TESTNET_MOCK_WBTC;
+            dexRouter = MANTLE_TESTNET_MOCK_DEX;
+            oapp;
+            oapp2;
+            oapp3;
         }
     }
 }

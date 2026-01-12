@@ -7,7 +7,7 @@ import { PausableUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/P
 import { UUPSUpgradeable } from "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
 import { ReentrancyGuardUpgradeable } from "@openzeppelin/contracts-upgradeable/utils/ReentrancyGuardUpgradeable.sol";
 import { AccessControlUpgradeable } from "@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol";
-import { IPriceFeed } from "./interfaces/IPriceFeed.sol";
+import { IOracle } from "./interfaces/IOracle.sol";
 import { TokenDataStreamHook } from "./lib/TokenDataStreamHook.sol";
 
 /**
@@ -92,7 +92,7 @@ contract TokenDataStream is
     /// @return The number of decimals used by the token's price feed
     function decimals(address _token) public view returns (uint256) {
         if (tokenPriceFeed[_token] == address(0)) revert TokenPriceFeedNotSet(_token);
-        return IPriceFeed(tokenPriceFeed[_token]).decimals();
+        return IOracle(tokenPriceFeed[_token]).decimals();
     }
 
     /// @notice Returns the latest price data for a token in Chainlink-compatible format
@@ -111,12 +111,12 @@ contract TokenDataStream is
     function latestRoundData(address _token) public view returns (uint80, uint256, uint256, uint256, uint80) {
         if (tokenPriceFeed[_token] == address(0)) revert TokenPriceFeedNotSet(_token);
         address _priceFeed = tokenPriceFeed[_token];
-        (uint80 idRound, int256 priceAnswer, uint256 updatedAt) = IPriceFeed(_priceFeed).latestRoundData();
-        if (block.timestamp - updatedAt > 3600) revert PriceStale(_token, _priceFeed, updatedAt);
-        if (priceAnswer < 0) revert NegativePriceAnswer(priceAnswer);
+        (uint80 idRound, uint256 priceAnswer, uint256 startedAt, uint256 updatedAt, uint80 answeredInRound) = IOracle(_priceFeed).latestRoundData();
+        // if (block.timestamp - updatedAt > 3600) revert PriceStale(_token, _priceFeed, updatedAt);
+        // if (priceAnswer < 0) revert NegativePriceAnswer(priceAnswer);
 
         // forge-lint: disable-next-line(unsafe-typecast)
-        return (idRound, uint256(priceAnswer), 0, updatedAt, 0);
+        return (idRound, uint256(priceAnswer), startedAt, updatedAt, answeredInRound);
     }
 
     // =============================================================

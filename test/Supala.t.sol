@@ -31,8 +31,9 @@ import { LendingPoolFactoryHook } from "../src/lib/LendingPoolFactoryHook.sol";
 import { MockDex } from "../src/MockDex/MockDex.sol";
 // ======================= MockToken =======================
 import { MOCKUSDT } from "../src/MockToken/MOCKUSDT.sol";
-import { MOCKWKAIA } from "../src/MockToken/MOCKWKAIA.sol";
+import { MOCKWMNT } from "../src/MockToken/MOCKWMNT.sol";
 import { MOCKWETH } from "../src/MockToken/MOCKWETH.sol";
+import { MOCKUSDC } from "../src/MockToken/MOCKUSDC.sol";
 // ======================= LayerZero =======================
 import { MyOApp } from "../src/layerzero/MyOApp.sol";
 import { ILayerZeroEndpointV2 } from "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol";
@@ -72,8 +73,9 @@ contract SupalaTest is Test, Helper {
     ERC1967Proxy public proxy;
     ProxyDeployer public proxyDeployer;
     MOCKUSDT public mockUsdt;
-    MOCKWKAIA public mockWkaia;
+    MOCKWMNT public mockWmnt;
     MOCKWETH public mockWeth;
+    MOCKUSDC public mockUsdc;
     MockDex public mockDex;
     Orakl public mockOrakl;
     TokenDataStream public tokenDataStream;
@@ -102,10 +104,11 @@ contract SupalaTest is Test, Helper {
     function setUp() public {
         // vm.createSelectFork(vm.rpcUrl("kaia_mainnet"));
         // vm.createSelectFork(vm.rpcUrl("base_mainnet"));
-        vm.createSelectFork(vm.rpcUrl("kaia_testnet"));
+        // vm.createSelectFork(vm.rpcUrl("kaia_testnet"));
         // vm.createSelectFork(vm.rpcUrl("moonbeam_mainnet"));
-        vm.startPrank(owner);
+        vm.createSelectFork(vm.rpcUrl("mantle_testnet"));
 
+        vm.startPrank(owner);
         _getUtils();
         deal(usdt, alice, 100_000e6);
         deal(wNative, alice, 100_000 ether);
@@ -158,7 +161,7 @@ contract SupalaTest is Test, Helper {
     function _getUtils() internal override {
         super._getUtils();
         usdt = _deployMockToken("USDT");
-        wNative = _deployMockToken("WKAIA");
+        wNative = _deployMockToken("WMNT");
         dexRouter = _deployMockDex();
     }
 
@@ -166,9 +169,12 @@ contract SupalaTest is Test, Helper {
         if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("USDT"))) {
             mockUsdt = new MOCKUSDT();
             return address(mockUsdt);
-        } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("WKAIA"))) {
-            mockWkaia = new MOCKWKAIA();
-            return address(mockWkaia);
+        } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("USDC"))) {
+            mockUsdc = new MOCKUSDC();
+            return address(mockUsdc);
+        } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("WMNT"))) {
+            mockWmnt = new MOCKWMNT();
+            return address(mockWmnt);
         } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("WETH"))) {
             mockWeth = new MOCKWETH();
             return address(mockWeth);
@@ -218,7 +224,7 @@ contract SupalaTest is Test, Helper {
     function _setSendConfig() internal {
         UlnConfig memory uln = UlnConfig({
             confirmations: 15,
-            requiredDVNCount: block.chainid == 1001 ? 1 : 2,
+            requiredDVNCount: block.chainid == 5003 ? 1 : 2,
             optionalDVNCount: type(uint8).max,
             optionalDVNThreshold: 0,
             requiredDVNs: _toDynamicArray([dvn1, dvn2]),
@@ -242,7 +248,7 @@ contract SupalaTest is Test, Helper {
     function _setReceiveConfig() internal {
         UlnConfig memory uln = UlnConfig({
             confirmations: 15,
-            requiredDVNCount: block.chainid == 1001 ? 1 : 2,
+            requiredDVNCount: block.chainid == 5003 ? 1 : 2,
             optionalDVNCount: type(uint8).max,
             optionalDVNThreshold: 0,
             requiredDVNs: _toDynamicArray([dvn1, dvn2]),
@@ -373,7 +379,7 @@ contract SupalaTest is Test, Helper {
     function _setMockDexFactory() internal {
         // Set the factory address on MockDex after proxy is created
         // This is needed because MockDex is created before the factory proxy in _getUtils()
-        if (address(mockDex) != address(0) && block.chainid == 1001) {
+        if (address(mockDex) != address(0) && (block.chainid == 5003)) {
             mockDex.setFactory(address(lendingPoolFactory));
         }
     }
@@ -1028,7 +1034,7 @@ contract SupalaTest is Test, Helper {
     }
 
     function _toDynamicArray(address[2] memory fixedArray) internal view returns (address[] memory) {
-        if (block.chainid == 1001) {
+        if (block.chainid == 5003) {
             address[] memory dynamicArray = new address[](1);
             dynamicArray[0] = fixedArray[0];
             return dynamicArray;
