@@ -92,8 +92,8 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         _setLibraries(address(0));
         _setSendConfig(address(0));
         _setReceiveConfig(address(0));
-        _setPeers();
-        _setEnforcedOptions();
+        _setPeers(address(0), address(0));
+        _setEnforcedOptions(address(0));
 
         // *****************************************
 
@@ -115,7 +115,7 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         _setInterestRateModelToFactory();
         _setInterestRateModelTokenReserveFactor(address(0), 0);
         _deployHelperUtils();
-        _setOftAddress();
+        _setOftAddress(address(0), address(0));
 
         vm.stopPrank();
     }
@@ -172,12 +172,12 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
     }
 
     function _deployOft(address _token) internal virtual {
+        if (_token == address(0)) revert("address can't be zero");
         elevatedminterburner = new ElevatedMinterBurner(_token, owner);
         string memory tokenTicker = IERC20Metadata(_token).symbol();
         console.log("address public constant %s_%s_ELEVATED_MINTER_BURNER = %s;", chainName, tokenTicker, address(elevatedminterburner));
         oftadapter = new OFTadapter(_token, address(elevatedminterburner), endpoint, owner, _tokenDecimals(_token));
         console.log("address public constant %s_%s_OFT_ADAPTER = %s;", chainName, tokenTicker, address(oftadapter));
-        oftUsdtAdapter = address(oftadapter);
         oapp = address(oftadapter);
         elevatedminterburner.setOperator(oapp, true);
     }
@@ -191,10 +191,10 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
     function _setSendConfig(address _oapp) internal virtual {
         UlnConfig memory uln = UlnConfig({
             confirmations: 15,
-            requiredDVNCount: block.chainid == 5003 ? 1 : 2,
+            requiredDVNCount: _getRequiredDvnCount(),
             optionalDVNCount: type(uint8).max,
             optionalDVNThreshold: 0,
-            requiredDVNs: _toDynamicArray([dvn1, dvn2]),
+            requiredDVNs: _toDynamicDvnArray([dvn1, dvn2]),
             optionalDVNs: new address[](0)
         });
 
@@ -213,10 +213,10 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
     function _setReceiveConfig(address _oapp) internal virtual {
         UlnConfig memory uln = UlnConfig({
             confirmations: 15,
-            requiredDVNCount: block.chainid == 5003 ? 1 : 2,
+            requiredDVNCount: _getRequiredDvnCount(),
             optionalDVNCount: type(uint8).max,
             optionalDVNThreshold: 0,
-            requiredDVNs: _toDynamicArray([dvn1, dvn2]),
+            requiredDVNs: _toDynamicDvnArray([dvn1, dvn2]),
             optionalDVNs: new address[](0)
         });
         bytes memory encodedUln = abi.encode(uln);
@@ -227,24 +227,15 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         ILayerZeroEndpointV2(endpoint).setConfig(_oapp, receiveLib, params);
     }
 
-    function _setPeers() internal virtual {
-        bytes32 oftPeerSrc = bytes32(uint256(uint160(address(oapp)))); // oappSrc
-        bytes32 oftPeerDst = bytes32(uint256(uint160(address(oapp)))); // oappDst
-        OFTadapter(oapp).setPeer(eid0, oftPeerSrc);
-        OFTadapter(oapp).setPeer(eid1, oftPeerDst);
+    function _setPeers(address _oappSrc, address _oappDst) internal virtual {
+        bytes32 oftPeerSrc = bytes32(uint256(uint160(address(_oappSrc)))); // oappSrc
+        bytes32 oftPeerDst = bytes32(uint256(uint160(address(_oappDst)))); // oappDst
 
-        bytes32 oftPeerSrc2 = bytes32(uint256(uint160(address(oapp2)))); // oappSrc2
-        bytes32 oftPeerDst2 = bytes32(uint256(uint160(address(oapp2)))); // oappDst2
-        OFTKAIAadapter(oapp2).setPeer(eid0, oftPeerSrc2);
-        OFTKAIAadapter(oapp2).setPeer(eid1, oftPeerDst2);
-
-        bytes32 oftPeerSrc3 = bytes32(uint256(uint160(address(oapp3)))); // oappSrc3
-        bytes32 oftPeerDst3 = bytes32(uint256(uint160(address(oapp3)))); // oappDst3
-        OFTKAIAadapter(oapp3).setPeer(eid0, oftPeerSrc3);
-        OFTKAIAadapter(oapp3).setPeer(eid1, oftPeerDst3);
+        OFTadapter(_oappSrc).setPeer(eid0, oftPeerSrc);
+        OFTadapter(_oappSrc).setPeer(eid1, oftPeerDst);
     }
 
-    function _setEnforcedOptions() internal virtual {
+    function _setEnforcedOptions(address _oapp) internal virtual {
         bytes memory options1 = OptionsBuilder.newOptions().addExecutorLzReceiveOption(80000, 0);
         bytes memory options2 = OptionsBuilder.newOptions().addExecutorLzReceiveOption(100000, 0);
 
@@ -252,9 +243,7 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         enforcedOptions[0] = EnforcedOptionParam({ eid: eid0, msgType: SEND, options: options1 });
         enforcedOptions[1] = EnforcedOptionParam({ eid: eid1, msgType: SEND, options: options2 });
 
-        MyOApp(oapp).setEnforcedOptions(enforcedOptions);
-        MyOApp(oapp2).setEnforcedOptions(enforcedOptions);
-        MyOApp(oapp3).setEnforcedOptions(enforcedOptions);
+        MyOApp(_oapp).setEnforcedOptions(enforcedOptions);
     }
 
     function _deployTokenDataStream() internal virtual {
@@ -395,24 +384,13 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         console.log("address public constant %s_HELPER_UTILS = %s;", chainName, address(helperUtils));
     }
 
-    function _setOftAddress() internal virtual {
-        IFactory(address(lendingPoolFactory)).setOftAddress(usdt, oapp);
-        IFactory(address(lendingPoolFactory)).setOftAddress(wNative, oapp2);
-        IFactory(address(lendingPoolFactory)).setOftAddress(native, oapp2);
-        IFactory(address(lendingPoolFactory)).setOftAddress(weth, oapp3);
-    }
+    function _setOftAddress(address _token, address _oapp) internal virtual {
+        // IFactory(address(lendingPoolFactory)).setOftAddress(usdt, oapp);
+        // IFactory(address(lendingPoolFactory)).setOftAddress(wNative, oapp2);
+        // IFactory(address(lendingPoolFactory)).setOftAddress(native, oapp2);
+        // IFactory(address(lendingPoolFactory)).setOftAddress(weth, oapp3);
 
-    function _toDynamicArray(address[2] memory fixedArray) internal view virtual returns (address[] memory) {
-        if (block.chainid == 5003) {
-            address[] memory dynamicArray = new address[](1);
-            dynamicArray[0] = fixedArray[0];
-            return dynamicArray;
-        } else {
-            address[] memory dynamicArray = new address[](2);
-            dynamicArray[0] = fixedArray[0];
-            dynamicArray[1] = fixedArray[1];
-            return dynamicArray;
-        }
+        IFactory(address(lendingPoolFactory)).setOftAddress(_token, _oapp);
     }
 
     function _tokenDecimals(address _token) internal view virtual returns (uint8) {

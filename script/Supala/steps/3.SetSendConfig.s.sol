@@ -15,7 +15,7 @@ contract SetSendConfig is Script, DeployCoreSupala {
 }
 
 // RUN
-// forge script SetSendConfig --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
-// forge script SetSendConfig --broadcast -vvv --verify
-// forge script SetSendConfig --broadcast -vvv
-// forge script SetSendConfig -vvv
+// forge script script/Supala/steps/3.SetSendConfig.s.sol:SetSendConfig --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
+// forge script script/Supala/steps/3.SetSendConfig.s.sol:SetSendConfig --broadcast -vvv --verify
+// forge script script/Supala/steps/3.SetSendConfig.s.sol:SetSendConfig --broadcast -vvv
+// forge script script/Supala/steps/3.SetSendConfig.s.sol:SetSendConfig -vvv

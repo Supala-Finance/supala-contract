@@ -4,6 +4,12 @@ pragma solidity ^0.8.30;
 import { Script, console } from "forge-std/Script.sol";
 import { Helper } from "@script/DevTools/Helper.sol";
 import { IERC20Metadata } from "@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol";
+import { SelectRpc } from "@script/DevTools/SelectRpc.sol";
+
+/// @title MintToken
+/// @notice Development script for minting tokens to a specified address
+/// @dev This Forge script is used for testing and development purposes to mint tokens
+///      Inherits from Script for Forge functionality and Helper for network constants
 
 /// @title IToken
 /// @notice Interface for token contracts that support minting and operator management
@@ -22,11 +28,7 @@ interface IToken {
     function setOperator(address _operator, bool _isOperator) external;
 }
 
-/// @title MintToken
-/// @notice Development script for minting tokens to a specified address
-/// @dev This Forge script is used for testing and development purposes to mint tokens
-///      Inherits from Script for Forge functionality and Helper for network constants
-contract MintToken is Script, Helper {
+contract MintToken is Script, Helper, SelectRpc {
     /*//////////////////////////////////////////////////////////////
                             STATE VARIABLES
     //////////////////////////////////////////////////////////////*/
@@ -36,13 +38,16 @@ contract MintToken is Script, Helper {
     address public minter = vm.envAddress("PUBLIC_KEY");
 
     /// @notice The address of the token contract to mint from
-    /// @dev Currently set to KAIA_MOCK_USDT from the Helper contract
-    address public token = KAIA_MOCK_USDT;
+    address public token = MANTLE_TESTNET_MOCK_USDC;
 
     /// @notice The amount of tokens to mint (in human-readable units)
     /// @dev This value will be multiplied by the token's decimals before minting
     ///      For example: 100_000 USDT = 100_000 * 10^6 = 100,000,000,000 smallest units
     uint256 public amount = 100_000;
+
+    function setUp() public {
+        selectRpc();
+    }
 
     /*//////////////////////////////////////////////////////////////
                             MAIN FUNCTIONS
@@ -57,10 +62,7 @@ contract MintToken is Script, Helper {
     ///      - Create a fork of Kaia or Base mainnet for testing
     ///      - Set the operator status before minting if required
     function run() public {
-        // vm.createSelectFork(vm.rpcUrl("kaia_mainnet"));
-        // vm.createSelectFork(vm.rpcUrl("base_mainnet"));
         vm.startBroadcast(vm.envUint("PRIVATE_KEY"));
-        // IToken(token).setOperator(minter, true);
         IToken(token).mint(minter, amount * 10 ** IERC20Metadata(token).decimals());
         vm.stopBroadcast();
         console.log("Minted", amount, "tokens");

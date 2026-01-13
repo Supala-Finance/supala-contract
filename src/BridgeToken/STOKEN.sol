@@ -67,6 +67,7 @@ contract STOKEN is Initializable, ContextUpgradeable, ERC20Upgradeable, Pausable
         __Pausable_init();
         __UUPSUpgradeable_init();
 
+        _grantRole(DEFAULT_ADMIN_ROLE, _msgSender());
         _grantRole(OWNER_ROLE, _msgSender());
         _grantRole(UPGRADER_ROLE, _msgSender());
         _grantRole(MINTER_ROLE, _msgSender());

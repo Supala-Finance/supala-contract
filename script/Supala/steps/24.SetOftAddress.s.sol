@@ -8,7 +8,8 @@ contract SetOftAddress is Script, DeployCoreSupala {
     function run() public override {
         vm.startBroadcast(privateKey);
         _getUtils();
-        _setOftAddress();
+        _setOftAddress(usdt, MANTLE_TESTNET_USDT_OFT_ADAPTER);
+        _setOftAddress(usdc, MANTLE_TESTNET_USDC_OFT_ADAPTER);
         vm.stopBroadcast();
     }
 }

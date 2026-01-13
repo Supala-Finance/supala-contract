@@ -8,13 +8,14 @@ import { OptionsBuilder } from "@layerzerolabs/oapp-evm/contracts/oapp/libs/Opti
 import { MessagingFee } from "@layerzerolabs/oapp-evm/contracts/oapp/OApp.sol";
 import { Helper } from "@script/DevTools/Helper.sol";
 import { IERC20 } from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import { SelectRpc } from "@script/DevTools/SelectRpc.sol";
 
 /// @title DevSendOFT
 /// @notice Development script for sending tokens cross-chain using LayerZero OFT (Omnichain Fungible Token) adapter
 /// @dev This script is intended for development and testing purposes. It demonstrates how to send tokens
 ///      from a source chain to a destination chain using the LayerZero OFT adapter pattern.
 ///      The script handles token approval, fee calculation, and cross-chain message execution.
-contract DevSendOFT is Script, Helper {
+contract DevSendOFT is Script, Helper, SelectRpc {
     using OptionsBuilder for bytes;
 
     // ============================================
@@ -28,15 +29,11 @@ contract DevSendOFT is Script, Helper {
     // *********FILL THIS*********
     /// @notice Address of the OFT adapter contract on the source chain
     /// @dev This is the contract that wraps/adapts the source token for cross-chain transfer
-    address oftAddress = KAIA_OFT_MOCK_USDT_ADAPTER; // src
-
-    /// @notice Address of the elevated minter/burner contract for the token
-    /// @dev Used for privileged minting and burning operations during cross-chain transfers
-    address minterBurner = KAIA_MOCK_USDT_ELEVATED_MINTER_BURNER;
+    address oftAddress = MANTLE_TESTNET_USDC_OFT_ADAPTER; // src
 
     /// @notice Address of the source token contract on the origin chain
     /// @dev This is the actual ERC20 token being sent cross-chain
-    address token = KAIA_MOCK_USDT;
+    address token = MANTLE_TESTNET_MOCK_USDC;
 
     /// @notice The base amount of tokens to send (in token's native decimals)
     /// @dev Set to 1e6 for USDT (6 decimals)
@@ -54,7 +51,7 @@ contract DevSendOFT is Script, Helper {
 
     /// @notice LayerZero endpoint ID for the destination chain
     /// @dev BASE_EID represents Base chain as the destination
-    uint32 dstEid = BASE_EID; // dst
+    uint32 dstEid = BASE_TESTNET_EID; // dst
 
     //*******
     //***************************
@@ -67,10 +64,7 @@ contract DevSendOFT is Script, Helper {
     /// @dev Creates and selects a fork of the Kaia mainnet to simulate the source chain environment.
     ///      This allows testing cross-chain functionality in a controlled environment.
     function setUp() public {
-        // base
-        vm.createSelectFork(vm.rpcUrl("kaia_mainnet"));
-        // optimism
-        // hyperliquid
+        selectRpc();
     }
 
     // ============================================

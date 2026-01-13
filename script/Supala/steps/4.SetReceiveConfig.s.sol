@@ -15,7 +15,7 @@ contract SetReceiveConfig is Script, DeployCoreSupala {
 }
 
 // RUN
-// forge script SetReceiveConfig --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
-// forge script SetReceiveConfig --broadcast -vvv --verify
-// forge script SetReceiveConfig --broadcast -vvv
-// forge script SetReceiveConfig -vvv
+// forge script script/Supala/steps/4.SetReceiveConfig.s.sol:SetReceiveConfig --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
+// forge script script/Supala/steps/4.SetReceiveConfig.s.sol:SetReceiveConfig --broadcast -vvv --verify
+// forge script script/Supala/steps/4.SetReceiveConfig.s.sol:SetReceiveConfig --broadcast -vvv
+// forge script script/Supala/steps/4.SetReceiveConfig.s.sol:SetReceiveConfig -vvv

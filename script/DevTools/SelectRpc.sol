@@ -7,4 +7,8 @@ contract SelectRpc is Script {
     function selectRpc() public {
         vm.createSelectFork(vm.rpcUrl("mantle_testnet"));
     }
+
+    function selectDstRpc() public {
+        vm.createSelectFork(vm.rpcUrl("base_testnet"));
+    }
 }

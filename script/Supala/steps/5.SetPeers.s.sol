@@ -8,13 +8,16 @@ contract SetPeers is Script, DeployCoreSupala {
     function run() public override {
         vm.startBroadcast(privateKey);
         _getUtils();
-        _setPeers();
+
+        _setPeers(MANTLE_TESTNET_USDC_OFT_ADAPTER, BASE_TESTNET_SUSDC_OFT_ADAPTER);
+        _setPeers(MANTLE_TESTNET_USDT_OFT_ADAPTER, BASE_TESTNET_SUSDT_OFT_ADAPTER);
+
         vm.stopBroadcast();
     }
 }
 
 // RUN
-// forge script SetPeers --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
-// forge script SetPeers --broadcast -vvv --verify
-// forge script SetPeers --broadcast -vvv
-// forge script SetPeers -vvv
+// forge script script/Supala/steps/5.SetPeers.s.sol:SetPeers --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
+// forge script script/Supala/steps/5.SetPeers.s.sol:SetPeers --broadcast -vvv --verify
+// forge script script/Supala/steps/5.SetPeers.s.sol:SetPeers --broadcast -vvv
+// forge script script/Supala/steps/5.SetPeers.s.sol:SetPeers -vvv

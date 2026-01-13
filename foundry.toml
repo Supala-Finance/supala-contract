@@ -18,6 +18,7 @@ wrap_comments = false
 kaia_testnet = "${KAIA_TESTNET_RPC}"
 kaia_mainnet = "${KAIA_MAINNET_RPC}"
 base_mainnet = "${BASE_MAINNET_RPC}"
+base_testnet = "${BASE_TESTNET_RPC}"
 arb_mainnet = "${ARB_MAINNET_RPC}"
 moonbeam_mainnet = "${MOONBEAM_MAINNET_RPC}"
 moonbeam_testnet = "${MOONBEAM_TESTNET_RPC}"

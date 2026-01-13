@@ -9,12 +9,13 @@ contract SetLibraries is Script, DeployCoreSupala {
         vm.startBroadcast(privateKey);
         _getUtils();
         _setLibraries(MANTLE_TESTNET_USDT_OFT_ADAPTER);
+        _setLibraries(MANTLE_TESTNET_USDC_OFT_ADAPTER);
         vm.stopBroadcast();
     }
 }
 
 // RUN
-// forge script SetLibraries --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
-// forge script SetLibraries --broadcast -vvv --verify
-// forge script SetLibraries --broadcast -vvv
-// forge script SetLibraries -vvv
+// forge script script/Supala/steps/2.SetLibraries.s.sol:SetLibraries --broadcast -vvv --verify --verifier etherscan --etherscan-api-key $ETHERSCAN_API_KEY
+// forge script script/Supala/steps/2.SetLibraries.s.sol:SetLibraries --broadcast -vvv --verify
+// forge script script/Supala/steps/2.SetLibraries.s.sol:SetLibraries --broadcast -vvv
+// forge script script/Supala/steps/2.SetLibraries.s.sol:SetLibraries -vvv

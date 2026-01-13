@@ -208,11 +208,11 @@ contract Helper {
 
     address public constant MANTLE_TESTNET_MOCK_DEX = 0x5C368bd6cE77b2ca47B4ba791fCC1f1645591c84;
 
-    address public constant MANTLE_TESTNET_USDT_ELEVATED_MINTER_BURNER = 0x175867CAF278eB0610F216F3E0a6E671f2382E22;
-    address public constant MANTLE_TESTNET_USDT_OFT_ADAPTER = 0xC327486Db1417644f201d84414bbeA6C8A948bef;
+    address public constant MANTLE_TESTNET_USDT_ELEVATED_MINTER_BURNER = 0x26149BD6a6d2e2CfB358852a7EA186aFE58591E1;
+    address public constant MANTLE_TESTNET_USDT_OFT_ADAPTER = 0xa7f7368b6CBdF2bE4d508ad85d2CC1F3248a9ED5;
 
-    address public constant MANTLE_TESTNET_USDC_ELEVATED_MINTER_BURNER = 0x6Ab9c1AAf4f8172138086AA72be2AB8aA6579dbd;
-    address public constant MANTLE_TESTNET_USDC_OFT_ADAPTER = 0x886ba47579DC4f5DcB53ffd20429089A7788C072;
+    address public constant MANTLE_TESTNET_USDC_ELEVATED_MINTER_BURNER = 0xeD095E8dd2d72A8306fbEa923bff5091C000e963;
+    address public constant MANTLE_TESTNET_USDC_OFT_ADAPTER = 0x64493Bd2F250cC05D75bCa93cc95447e2834638b;
 
     address public constant MANTLE_TESTNET_WMNT_ELEVATED_MINTER_BURNER = 0x39926DA4905f5Edb956F5dB5F2e2FF044E0882B2;
     address public constant MANTLE_TESTNET_WMNT_OFT_ADAPTER = 0xAE1b8d3B428d6A8F62df2f623081EAC8734168fe;
@@ -248,11 +248,24 @@ contract Helper {
 
     address public constant MANTLE_TESTNET_HELPER_UTILS = 0x6c454d20F4CB5f69e2D66693fA8deE931D7432dF;
 
+    address public constant BASE_TESTNET_SUSDC_IMPLEMENTATION = 0x53D7f02e72d62f7b7B41F6B622A7d79694BED966;
+    address public constant BASE_TESTNET_SUSDC = 0xd506b22a6b3216b736021FA262D0F5D686e07b35;
+
+    address public constant BASE_TESTNET_SUSDT_IMPLEMENTATION = 0x5C43afab54BD5E5568d0aD54ea60D4d065303C35;
+    address public constant BASE_TESTNET_SUSDT = 0xBdC661EECb0dcFB940A34008e0190c9103013C41;
+
+    address public constant BASE_TESTNET_SUSDT_ELEVATED_MINTER_BURNER = 0x31fC86E13108A098830eea63A8A9f6d80DfC89Aa;
+    address public constant BASE_TESTNET_SUSDT_OFT_ADAPTER = 0x02a66B51Fc24E08535a6Cfe1e11E532D8A089212;
+
+    address public constant BASE_TESTNET_SUSDC_ELEVATED_MINTER_BURNER = 0xb516190F8192CCEaF8B1DA7D9Ca1C6C75b9F410c;
+    address public constant BASE_TESTNET_SUSDC_OFT_ADAPTER = 0x33FaBa0e0cE340AfC4fb03038151FF7EE1d5f95b;
+
     bytes32 public constant DEFAULT_ADMIN_ROLE = 0x00;
     bytes32 public constant PAUSER_ROLE = keccak256("PAUSER_ROLE");
     bytes32 public constant UPGRADER_ROLE = keccak256("UPGRADER_ROLE");
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
     bytes32 public constant ADMIN_ROLE = keccak256("ADMIN_ROLE");
+    bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     address public usdt;
     address public usdc;
@@ -381,6 +394,64 @@ contract Helper {
             oapp;
             oapp2;
             oapp3;
+        } else if (block.chainid == 84532) {
+            chainName = "BASE_TESTNET";
+            endpoint = BASE_TESTNET_LZ_ENDPOINT;
+            sendLib = BASE_TESTNET_SEND_LIB;
+            receiveLib = BASE_TESTNET_RECEIVE_LIB;
+            srcEid = BASE_TESTNET_EID;
+            gracePeriod = uint32(0);
+            dvn1 = BASE_TESTNET_DVN1;
+            dvn2 = BASE_TESTNET_DVN2;
+            executor = BASE_TESTNET_EXECUTOR;
+            eid0 = BASE_TESTNET_EID;
+            eid1 = MANTLE_TESTNET_EID;
+            usdt;
+            usdc;
+            wNative;
+            weth;
+            wbtc;
+            dexRouter;
+            oapp;
+            oapp2;
+            oapp3;
+        }
+    }
+
+    /**
+     * @notice Check if current chain requires single DVN configuration
+     * @dev Returns true for chains that need only 1 DVN instead of 2
+     * @return bool True if chain requires single DVN (Mantle Testnet or Base Testnet)
+     */
+    function _isSingleDvnChain() internal view returns (bool) {
+        return block.chainid == 5003 || block.chainid == 84532;
+    }
+
+    /**
+     * @notice Get required DVN count based on current chain
+     * @dev Centralized logic for DVN count configuration
+     * @return uint8 Number of required DVNs (1 for testnet chains, 2 for mainnet)
+     */
+    function _getRequiredDvnCount() internal view returns (uint8) {
+        return _isSingleDvnChain() ? 1 : 2;
+    }
+
+    /**
+     * @notice Convert fixed array to dynamic array based on DVN requirements
+     * @dev Used for LayerZero DVN configuration
+     * @param fixedArray Fixed size array of 2 DVN addresses
+     * @return address[] Dynamic array with 1 or 2 elements based on chain
+     */
+    function _toDynamicDvnArray(address[2] memory fixedArray) internal view returns (address[] memory) {
+        if (_isSingleDvnChain()) {
+            address[] memory dynamicArray = new address[](1);
+            dynamicArray[0] = fixedArray[0];
+            return dynamicArray;
+        } else {
+            address[] memory dynamicArray = new address[](2);
+            dynamicArray[0] = fixedArray[0];
+            dynamicArray[1] = fixedArray[1];
+            return dynamicArray;
         }
     }
 }
