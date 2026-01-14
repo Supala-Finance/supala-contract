@@ -24,6 +24,7 @@ import { InterestRateModel } from "@src/InterestRateModel.sol";
 import { ProxyDeployer } from "@src/ProxyDeployer.sol";
 import { SharesTokenDeployer } from "@src/SharesTokenDeployer.sol";
 import { SupalaEmitter } from "@src/SupalaEmitter.sol";
+import { Pricefeed } from "@src/Pricefeed.sol";
 // ======================= Helper =======================
 import { Helper } from "../DevTools/Helper.sol";
 // ======================= MockDex =======================
@@ -34,6 +35,9 @@ import { MOCKUSDC } from "@src/MockToken/MOCKUSDC.sol";
 import { MOCKWMNT } from "@src/MockToken/MOCKWMNT.sol";
 import { MOCKWETH } from "@src/MockToken/MOCKWETH.sol";
 import { MOCKWBTC } from "@src/MockToken/MOCKWBTC.sol";
+import { MOCKAAPLX } from "@src/MockToken/MOCKAAPLX.sol";
+import { MOCKAMZNX } from "@src/MockToken/MOCKAMZNX.sol";
+import { MOCKMSFTX } from "@src/MockToken/MOCKMSFTX.sol";
 // ======================= LayerZero =======================
 import { MyOApp } from "@src/layerzero/MyOApp.sol";
 import { ILayerZeroEndpointV2 } from "@layerzerolabs/lz-evm-protocol-v2/contracts/interfaces/ILayerZeroEndpointV2.sol";
@@ -69,9 +73,13 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
     MOCKWMNT public mockWmnt;
     MOCKWETH public mockWeth;
     MOCKWBTC public mockWbtc;
+    MOCKAAPLX public mockAaplx;
+    MOCKAMZNX public mockAmznx;
+    MOCKMSFTX public mockMsftx;
     MockDex public mockDex;
     Orakl public mockOrakl;
     TokenDataStream public tokenDataStream;
+    Pricefeed public pricefeed;
     InterestRateModel public interestRateModel;
     SharesTokenDeployer public sharesTokenDeployer;
     SupalaEmitter public supalaEmitter;
@@ -161,6 +169,15 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("WBTC"))) {
             mockWbtc = new MOCKWBTC();
             return address(mockWbtc);
+        } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("AAPLX"))) {
+            mockAaplx = new MOCKAAPLX();
+            return address(mockAaplx);
+        } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("AMZNX"))) {
+            mockAmznx = new MOCKAMZNX();
+            return address(mockAmznx);
+        } else if (keccak256(abi.encodePacked(_name)) == keccak256(abi.encodePacked("MSFTX"))) {
+            mockMsftx = new MOCKMSFTX();
+            return address(mockMsftx);
         }
         revert("Invalid token name");
     }
@@ -253,6 +270,16 @@ contract DeployCoreSupala is Script, SelectRpc, Helper {
         proxy = new ERC1967Proxy(address(tokenDataStream), data);
         tokenDataStream = TokenDataStream(address(proxy));
         console.log("address public constant %s_TOKEN_DATA_STREAM = %s;", chainName, address(tokenDataStream));
+    }
+
+    function _deployCustomOracle(address _token) internal virtual {
+        pricefeed = new Pricefeed(_token);
+        string memory symbol = IERC20Metadata(_token).symbol();
+        console.log("address public constant %s_%s_USD = %s;", chainName, symbol, address(pricefeed));
+    }
+
+    function _setOraclePrice(address _oracle, uint256 _price) internal virtual {
+        Pricefeed(_oracle).setPrice(_price);
     }
 
     function _setTokenDataStream(address _token, address _oracle) internal virtual {

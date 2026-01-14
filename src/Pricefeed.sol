@@ -26,7 +26,7 @@ contract Pricefeed is Ownable {
 
     /// @notice Current price of the token
     /// @dev Price is stored with the precision defined by the decimals variable (default 8 decimals)
-    int256 public price;
+    uint256 public price;
 
     /// @notice Timestamp when the current round started
     /// @dev This is set to block.timestamp when setPrice is called
@@ -65,7 +65,7 @@ contract Pricefeed is Ownable {
      * @custom:security Only callable by the contract owner
      * @custom:emits Could emit a PriceUpdated event if implemented
      */
-    function setPrice(int256 _price) public onlyOwner {
+    function setPrice(uint256 _price) public onlyOwner {
         roundId = 1;
         price = _price;
         startedAt = block.timestamp;
@@ -82,7 +82,7 @@ contract Pricefeed is Ownable {
      * @return updatedAt_ Timestamp when the price was last updated
      * @return answeredInRound_ The round ID in which the answer was computed
      */
-    function latestRoundData() public view returns (uint80, int256, uint256, uint256, uint80) {
+    function latestRoundData() public view returns (uint80, uint256, uint256, uint256, uint80) {
         return (roundId, price, startedAt, updatedAt, answeredInRound);
     }
 }
