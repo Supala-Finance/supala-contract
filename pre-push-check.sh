@@ -120,6 +120,14 @@ echo "🧪 Step 6: Running tests (ProtocolTest only - no RPC required)..."
 forge test -vv --match-contract "ProtocolTest" --no-match-test "testExecuteBuyback"
 
 echo ""
+echo "📸 Step 7: Running gas snapshot..."
+if forge snapshot --match-contract "ProtocolTest" --no-match-test "testExecuteBuyback"; then
+    echo "✅ Gas snapshot completed"
+else
+    echo "⚠️ Gas snapshot failed (non-blocking)"
+fi
+
+echo ""
 echo "✅ =============================================="
 echo "✅ All checks passed! Safe to push to GitHub."
 echo "✅ =============================================="

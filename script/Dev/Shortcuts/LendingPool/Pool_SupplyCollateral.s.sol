@@ -9,10 +9,10 @@ import { SelectRpc } from "@script/DevTools/SelectRpc.sol";
 contract Pool_SupplyCollateral is Script, Helper, SelectRpc {
     // Set the lending pool address here
     address public lendingPool = address(0); // Replace with actual lending pool address
-    
+
     // Set the user address here
     address public user = address(0); // Replace with actual user address
-    
+
     // Set the amount here
     uint256 public amount = 0; // Replace with actual amount
 
