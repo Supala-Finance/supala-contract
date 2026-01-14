@@ -502,7 +502,7 @@ contract LendingPool is
         IERC20(_borrowToken()).safeTransfer(creator, _creatorFee);
         IERC20(_borrowToken()).approve(_oftBorrowToken(), _userAmount);
         params.sendParam.amountLD = _userAmount;
-        params.sendParam.minAmountLD = _userAmount;
+        params.sendParam.minAmountLD = 0;
         if (params.fee.nativeFee > 0) {
             OFTadapter(_oftBorrowToken()).send{ value: params.fee.nativeFee }(params.sendParam, params.fee, _msgSender());
         } else {
